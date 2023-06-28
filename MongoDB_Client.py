@@ -117,8 +117,57 @@ def find_matches(string):
         if match:
             return match.group(0)
     return None
-        
+
+def rateListing(link: str):
+    """rates cars submitted by users in the database
+
+    Args:
+        link (str): link (PK) of the car to be rated
+    """
+    #regex match model
+    #verify number of cars present
+    #if number of cars present >= 10, give a rating based on mean price
+    # Find the document with the provided primary key
+    document = fb_collection.find_one({'_id':  link})
+
+    if not document:
+        print('Document not found.')
+        return
+
+    model = document['Model']
+    price = document['Price']
+
+    # Calculate the average price of matching documents in Collection1
+    matching_documents_fb = fb_collection.find({'Model': model})
+    total_price_fb = 0
+    count_fb = 0
+    for doc_fb in matching_documents_fb:
+        total_price_fb += doc_fb['Price']
+        count_fb += 1
+    average_price_fb = total_price_fb / count_fb if count_fb > 0 else 0
+
+    # Calculate the average price of matching documents in Collection2
+    matching_documents_cl = cl_collection.find({'Model': model})
+    total_price_cl = 0
+    count_cl = 0
+    for doc2 in matching_documents_cl:
+        total_price_cl += doc2['Price']
+        count_cl += 1
+    average_price_cl = total_price_cl / count_cl if count_cl > 0 else 0
+
+    # Compare the prices
+    if average_price_fb > 0 and price < average_price_fb:
+        return(f"The price of {model} in Facebook is lower than the average price of {average_price_fb.__round__(2)}")
     
+    elif average_price_fb > 0 and price > average_price_fb:
+        return(f"The price of {model} in Facebook is greater than the average price {average_price_fb.__round__(2)}")
+
+    if average_price_cl > 0 and price < average_price_cl:
+        return(f"The price of {model} in Craigslist is lower than the average price {average_price_cl.__round__(2)}") 
+        
+    elif average_price_cl > 0 and price > average_price_cl:
+        return(f"The price of {model} in Craigslist is greater than the average price {average_price_cl.__round__(2)}")
+        
 
 
 # Close the MongoDB connection

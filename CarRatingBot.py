@@ -4,6 +4,7 @@ from discord.ext import commands
 from dotenv import load_dotenv
 import Crawler
 import json
+import MongoDB_Client
 
 def createEnv():
     with open('config.json', 'r') as config_file:
@@ -34,6 +35,14 @@ async def add_to_db(ctx, *, command):
     try:
         await Crawler.processListing(command)
         await ctx.send("Added to DB")
+    except Exception as e:
+        await ctx.send(f"Error occurred: {str(e)}")
+        
+@bot.command(name='rateListing')
+async def rateListing(ctx, *, command):
+    try:
+        rating = await Crawler.rateListing(command)
+        await ctx.send(rating)
     except Exception as e:
         await ctx.send(f"Error occurred: {str(e)}")
 
