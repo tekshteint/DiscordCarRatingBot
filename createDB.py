@@ -51,7 +51,6 @@ def CreateDB():
         }
     }
 
-    # Connect to MongoDB
     client = MongoClient(mongo_host, mongo_port)
 
     # Create a new database
@@ -65,9 +64,6 @@ def CreateDB():
     cl_collection = db['CL']
     cl_collection.create_index("Price")
     db.command({"collMod": "CL", "validator": {"$jsonSchema": cl_schema}})
-
-    # Print the list of available databases
-    print(f"List of available databases: {client.list_database_names()}")
 
     # Close the MongoDB connection
     client.close()

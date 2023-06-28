@@ -54,13 +54,3 @@ if __name__ == "__main__":
     -add rating command and logic
     
     """
-    
-    
-    """@bot.command()
-async def name(ctx):
-    await ctx.send("Hello {}".format(ctx.author.name))
-    
- @bot.command()
-async def addToDB(ctx):
-    await Crawler.listingCrawler(ctx.message.content)
-    await ctx.send("Added to DB") """

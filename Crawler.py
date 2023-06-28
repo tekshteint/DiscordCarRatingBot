@@ -214,33 +214,7 @@ async def processListing(url):
     else:
         print("Unsupported link type")
         
-#strictly for dev env
-if __name__ == "__main__":
-    fbTest = listingCrawler("https://www.facebook.com/marketplace/item/167847196272425/?ref=browse_tab&referral_code=marketplace_top_picks&referral_story_type=top_picks")
-    db.add_car_to_fb(fbTest.getFBtitle(), fbTest.getFBprice(), fbTest.getFBlocation(), fbTest.getFBdesc(),fbTest.getLink())
-    fbTest = listingCrawler("https://www.facebook.com/marketplace/item/574244454853965/")
-    db.add_car_to_fb(fbTest.getFBtitle(), fbTest.getFBprice(), fbTest.getFBlocation(), fbTest.getFBdesc(),fbTest.getLink())
-    fbTest = listingCrawler("https://www.facebook.com/marketplace/item/722548419671590/?ref=browse_tab&referral_code=marketplace_top_picks&referral_story_type=top_picks")
-    db.add_car_to_fb(fbTest.getFBtitle(), fbTest.getFBprice(), fbTest.getFBlocation(), fbTest.getFBdesc(),fbTest.getLink())
-    #fbTest.printFBAttributes()
-    
-    clTest = listingCrawler("https://sfbay.craigslist.org/nby/cto/d/santa-rosa-2002-mercedes-class-wagon/7637474868.html")
-    db.add_car_to_cl(clTest.getCLtitle(), clTest.getCLprice(), clTest.getCLlocation(), clTest.getCLAttributes(), clTest.getCLdesc(),clTest.getLink())
-    clTest = listingCrawler("https://sfbay.craigslist.org/eby/cto/d/fairfield-1977-ford-thunderbird/7637474855.html")
-    db.add_car_to_cl(clTest.getCLtitle(), clTest.getCLprice(), clTest.getCLlocation(), clTest.getCLAttributes(), clTest.getCLdesc(),clTest.getLink())
-    clTest = listingCrawler("https://sfbay.craigslist.org/eby/cto/d/fremont-2015-audi-a3-18t-prestige-clean/7637474621.html")
-    db.add_car_to_cl(clTest.getCLtitle(), clTest.getCLprice(), clTest.getCLlocation(), clTest.getCLAttributes(), clTest.getCLdesc(),clTest.getLink())
-    clTest = listingCrawler("https://sfbay.craigslist.org/eby/cto/d/emeryville-2013-mini-countryman-jcw-all4/7637511070.html")
-    db.add_car_to_cl(clTest.getCLtitle(), clTest.getCLprice(), clTest.getCLlocation(), clTest.getCLAttributes(), clTest.getCLdesc(),clTest.getLink())
-    #clTest.printCLAttributes()
-    #print(clTest.getCLtitle())
-    
-    #db.add_car_to_cl(clTest.getCLtitle(), clTest.getCLprice(), clTest.getCLlocation(), clTest.getCLAttributes(), clTest.getCLdesc())
-    
-    #db.add_car_to_fb(fbTest.getFBtitle(), fbTest.getFBprice(), fbTest.getFBlocation(), fbTest.getFBdesc())
-    
-    
-    
+
     """
     TODO:
     

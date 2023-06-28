@@ -4,9 +4,9 @@ import CarBrandEnum
 import re
 
 # Connection details for MongoDB
-mongo_host = 'localhost'  # MongoDB host
-mongo_port = 27017  # MongoDB port
-mongo_db_name = 'CarRatingBotDB'  # Name of the database
+mongo_host = 'localhost'  
+mongo_port = 27017 
+mongo_db_name = 'CarRatingBotDB' 
 
 # Connect to MongoDB
 client = MongoClient(mongo_host, mongo_port)
@@ -21,8 +21,6 @@ except pymongo.errors.OperationFailure:  # If the collection doesn't exist
     import createDB
     createDB.CreateDB()
     
-    
-
 # Access the FB and CL collections
 fb_collection = db['FB']
 cl_collection = db['CL']
@@ -33,17 +31,11 @@ def update_document(primary_key, collection):
     existing_document = collection.find_one({'_id': primary_key})
 
     if existing_document:
-        # Retrieve the _id value
         existing_id = existing_document['_id']
-
-        # Delete the existing document
         collection.delete_one({'_id': existing_id})
         print("Existing document deleted.")
     
 
-   
-
-# Function to add a car to the FB collection
 def add_car_to_fb(title, price, location, description, link):
     update_document(link, fb_collection)
     car_info = title.split(" ")
@@ -76,12 +68,10 @@ def add_car_to_fb(title, price, location, description, link):
     fb_collection.insert_one(car_data)
     print("Car added to FB collection successfully!")
 
-# Function to add a car to the CL collection
 def add_car_to_cl(title, price, location, car_attributes, description, link):
     update_document(link, cl_collection)
     car_info = title.split(" ")
     car_year = int(car_info[0])
-    #car_make = str(CarBrandEnum.CarBrand[str(car_info[1]).upper()].name)
     car_make = car_info[1]
     car_model_substring = title.upper().find(car_make)
     
@@ -132,4 +122,4 @@ def find_matches(string):
 
 
 # Close the MongoDB connection
-client.close()
+#client.close()
