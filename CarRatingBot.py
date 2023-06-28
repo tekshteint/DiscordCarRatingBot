@@ -5,6 +5,10 @@ from dotenv import load_dotenv
 import Crawler
 import json
 import MongoDB_Client
+from keepAlive import keep_alive
+
+#used for repl.it to keep bot alive 
+#keep_alive()
 
 def createEnv():
     with open('config.json', 'r') as config_file:
