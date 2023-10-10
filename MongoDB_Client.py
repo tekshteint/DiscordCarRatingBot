@@ -31,9 +31,7 @@ def update_document(primary_key, collection):
     existing_document = collection.find_one({'_id': primary_key})
 
     if existing_document:
-        existing_id = existing_document['_id']
-        collection.delete_one({'_id': existing_id})
-        print("Existing document deleted.")
+        raise VehicleAdded("This listing is already in the database")
     
 
 def add_car_to_fb(title, price, location, description, link):
@@ -204,6 +202,8 @@ def rateModel(model):
     average_price = total_price / count if count > 0 else 0
     return average_price.__round__(2)
         
+class VehicleAdded(Exception):
+    pass
 
 
 # Close the MongoDB connection
