@@ -5,10 +5,7 @@ from dotenv import load_dotenv
 import Crawler
 import json
 import MongoDB_Client
-from keepAlive import keep_alive
 
-#used for repl.it to keep bot alive 
-#keep_alive()
 
 def createEnv():
     with open('config.json', 'r') as config_file:
@@ -34,7 +31,7 @@ async def on_message(message):
     await bot.process_commands(message)
 
 
-@bot.command(name='addToDB')
+@bot.command(name='add')
 async def add_to_db(ctx, *, command):
     try:
         await Crawler.processListing(command)
@@ -42,13 +39,22 @@ async def add_to_db(ctx, *, command):
     except Exception as e:
         await ctx.send(f"Error occurred: {str(e)}")
         
-@bot.command(name='rateListing')
+@bot.command(name='rate')
 async def rateListing(ctx, *, command):
     try:
         rating = await Crawler.rateListing(command)
         await ctx.send(rating)
     except Exception as e:
         await ctx.send(f"Error occurred: {str(e)}")
+        await ctx.send("Make sure to use the command `$add <your link here>`.")
+        await Crawler.processListing(command)
+        try:
+            print(command)
+            rating = await Crawler.rateListing(command)
+            await ctx.send(rating)
+        except Exception as e:
+            pass
+
 
 
 if __name__ == "__main__":

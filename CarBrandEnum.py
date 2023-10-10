@@ -16,6 +16,7 @@ class CarBrand(Enum):
     ALFA_ROMEO = "alfa romeo"
     ASTON_MARTIN = "aston martin"
     AUDI = "audi"
+    ACURA = "acura"
     BENTLEY = "bentley"
     BMW = "bmw"
     BUGATTI = "bugatti"

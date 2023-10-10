@@ -44,7 +44,7 @@ def add_car_to_fb(title, price, location, description, link):
     if matches is not None:
         car_make = matches
     else:
-        pass
+        car_make = "Unknown Make"
     
     car_model_substring = title.upper().find(car_make)
     
@@ -53,6 +53,10 @@ def add_car_to_fb(title, price, location, description, link):
     else:
         car_model = title[title.find(car_make):]
         car_model = title.replace(car_make, "").replace(str(car_year), "").lstrip()
+    if type(car_model) == list:
+        print(type(car_model))
+        print("Car model list: ", car_model)
+        car_model = str(car_model[0])
     
     car_data = {
         "_id" : link,
@@ -60,7 +64,7 @@ def add_car_to_fb(title, price, location, description, link):
         "Price": float(price.replace('$', '').replace(',', '')), 
         "Location": location,
         "Make": car_make,
-        "Model": car_model,
+        "Model": (car_model),
         "Year": car_year,
         "Description": ''.join(description)
     }
@@ -131,8 +135,10 @@ def rateListing(link: str):
     document = fb_collection.find_one({'_id':  link})
 
     if not document:
-        print('Document not found.')
-        return
+        print('Document not found on FB.')
+        document = cl_collection.find_one({'_id': link})
+        if not document:
+            return
 
     model = document['Model']
     price = document['Price']
@@ -154,19 +160,24 @@ def rateListing(link: str):
         total_price_cl += doc2['Price']
         count_cl += 1
     average_price_cl = total_price_cl / count_cl if count_cl > 0 else 0
+    
+    if (average_price_fb == 0):
+        total_average = average_price_cl
+    elif (average_price_cl == 0):
+        total_average = average_price_fb
+    else:    
+        total_average = (average_price_cl + average_price_fb) / 2
+    
 
     # Compare the prices
-    if average_price_fb > 0 and price < average_price_fb:
-        return(f"The price of {model} in Facebook is lower than the average price of {average_price_fb.__round__(2)}")
+    if total_average > 0 and price < total_average:
+        return(f"The price of {model} is lower than the average price of {total_average.__round__(2)}")
     
-    elif average_price_fb > 0 and price > average_price_fb:
-        return(f"The price of {model} in Facebook is greater than the average price {average_price_fb.__round__(2)}")
-
-    if average_price_cl > 0 and price < average_price_cl:
-        return(f"The price of {model} in Craigslist is lower than the average price {average_price_cl.__round__(2)}") 
+    elif total_average > 0 and price > total_average:
+        return(f"The price of {model} is greater than the average price {total_average.__round__(2)}")
         
-    elif average_price_cl > 0 and price > average_price_cl:
-        return(f"The price of {model} in Craigslist is greater than the average price {average_price_cl.__round__(2)}")
+    else:
+        return(f"The price of {model} is equal to the average price {average_price_cl.__round__(2)}")
         
 
 
