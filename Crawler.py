@@ -217,6 +217,10 @@ async def processListing(url):
 async def rateListing(url):
     rating = db.rateListing(url)
     return rating
+
+async def rateModel(model):
+    rating = db.rateModel(model)
+    return rating
     
 
     """
@@ -256,4 +260,5 @@ if __name__ == "__main__":
     #db.add_car_to_cl(clTest.getCLtitle(), clTest.getCLprice(), clTest.getCLlocation(), clTest.getCLAttributes(), clTest.getCLdesc())
 
     #db.add_car_to_fb(fbTest.getFBtitle(), fbTest.getFBprice(), fbTest.getFBlocation(), fbTest.getFBdesc())
-    rate = db.rateListing("https://losangeles.craigslist.org/sfv/cto/d/calabasas-1998-bmw-m3/7674554826.html")
+    #rate = db.rateListing("https://www.facebook.com/marketplace/item/179647175179591/?referralSurface=messenger_lightspeed_banner&referralCode=messenger_banner")
+    clTest = listingCrawler("https://sacramento.craigslist.org/cto/d/sacramento-super-low-mileage-2006-mazda/7666519489.html")

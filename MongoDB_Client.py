@@ -75,8 +75,13 @@ def add_car_to_fb(title, price, location, description, link):
 def add_car_to_cl(title, price, location, car_attributes, description, link):
     update_document(link, cl_collection)
     car_info = title.split(" ")
-    car_year = int(car_info[0])
-    car_make = car_info[1]
+    
+    words_to_remove = ["super", "low", "mileage", "clean", "project", "mechanic's", "special", "extremely"]
+    car_info_lower = [word.lower() for word in car_info]
+    car_info_filtered = [word for word in car_info_lower if word not in words_to_remove]
+    
+    car_year = int(car_info_filtered[0])
+    car_make = car_info_filtered[1]
     car_model_substring = title.upper().find(car_make)
     
     if car_model_substring != -1:
@@ -94,16 +99,16 @@ def add_car_to_cl(title, price, location, car_attributes, description, link):
         "Make": car_make,
         "Model": ''.join(car_model),
         "Year": car_year,
-        "Vin": car_attributes.get("vin") or "",
-        "Odometer": int(car_attributes.get("odometer")),
-        "Condition": car_attributes.get("condition"),
+        "Vin": car_attributes.get("vin") or "Not Provided",
+        "Odometer": int(car_attributes.get("odometer")) or -1,
+        "Condition": car_attributes.get("conditioNot Providedn") or "",
         "Drive": car_attributes.get("drive") or "",
-        "Fuel": car_attributes.get("fuel"),
-        "Paint Color": car_attributes.get("paint color"),
-        "Size": car_attributes.get("size"),
-        "Title status": car_attributes.get("title status"),
-        "Transmission": car_attributes.get("transmission"),
-        "Type": car_attributes.get("type"),
+        "Fuel": car_attributes.get("fuel") or "Not Provided",
+        "Paint Color": car_attributes.get("paint color") or "Not Provided",
+        "Size": car_attributes.get("size") or "Not Provided",
+        "Title status": car_attributes.get("title status") or "Not Provided",
+        "Transmission": car_attributes.get("transmission") or "Not Provided",
+        "Type": car_attributes.get("type") or "Not Provided",
         "Description": ''.join(description)
     }
         cl_collection.insert_one(car_data)
@@ -177,7 +182,27 @@ def rateListing(link: str):
         return(f"The price of {model} is greater than the average price {total_average.__round__(2)}")
         
     else:
-        return(f"The price of {model} is equal to the average price {average_price_cl.__round__(2)}")
+        return(f"The price of {model} is equal to the average price {total_average.__round__(2)}")
+    
+def rateModel(model):
+    total_price = 0
+    count = 0
+
+    # Create a regular expression pattern for partial matching of the model
+    pattern = re.compile(re.escape(model), re.IGNORECASE)
+
+    matching_documents_fb = fb_collection.find({'Model': {'$regex': pattern}})
+    for doc_fb in matching_documents_fb:
+        total_price += doc_fb['Price']
+        count += 1
+
+    matching_documents_cl = cl_collection.find({'Model': {'$regex': pattern}})
+    for doc_cl in matching_documents_cl:
+        total_price += doc_cl['Price']
+        count += 1
+
+    average_price = total_price / count if count > 0 else 0
+    return average_price.__round__(2)
         
 
 

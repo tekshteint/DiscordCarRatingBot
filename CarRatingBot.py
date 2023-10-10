@@ -45,8 +45,7 @@ async def rateListing(ctx, *, command):
         rating = await Crawler.rateListing(command)
         await ctx.send(rating)
     except Exception as e:
-        await ctx.send(f"Error occurred: {str(e)}")
-        await ctx.send("Make sure to use the command `$add <your link here>`.")
+        await ctx.send(f"Error occurred: {str(e)}. More than likely this car wasn't in the database. Adding it now.")
         await Crawler.processListing(command)
         try:
             print(command)
@@ -54,7 +53,22 @@ async def rateListing(ctx, *, command):
             await ctx.send(rating)
         except Exception as e:
             pass
-
+        
+@bot.command(name='averagePriceOf')
+async def rateModel(ctx, *, command):
+    try:
+        rating = await Crawler.rateModel(command)
+        await ctx.send(rating)
+    except Exception as e:
+        await ctx.send(f"Error occurred: {str(e)}")
+        
+""" @bot.command(name='help')
+async def rateListing(ctx, *, command):
+    try:
+        await ctx.send("Commands:\n$add stores a listing to the database\n$rate rates that specific listing. Semi-broken.\n$rateModel followed by the model of car will search across the database for that model string")
+    except Exception as e:
+        await ctx.send(f"Error occurred: {str(e)}")
+ """
 
 
 if __name__ == "__main__":
