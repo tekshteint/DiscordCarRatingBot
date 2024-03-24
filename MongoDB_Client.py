@@ -19,7 +19,7 @@ try:
 except pymongo.errors.OperationFailure:  # If the collection doesn't exist
     print("This collection doesn't exist, creating DB")
     import createDB
-    createDB.CreateDB()
+    createDB.run()
     
 # Access the FB and CL collections
 fb_collection = db['FB']

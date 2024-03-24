@@ -1,0 +1,6 @@
+aiohttp==3.8.6
+beautifulsoup4==4.12.3
+discord.py==2.3.2
+pymongo==4.5.0
+python-dotenv==1.0.1
+Requests==2.31.0

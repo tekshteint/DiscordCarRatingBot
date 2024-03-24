@@ -1,20 +1,29 @@
 import os
-import discord
-from discord.ext import commands
-from dotenv import load_dotenv
-import Crawler
-import json
-import MongoDB_Client
-
+try:
+    from time import sleep
+    import discord
+    from discord.ext import commands
+    from dotenv import load_dotenv
+    import Crawler
+    import json
+except ImportError:
+    os.system("python -m pip install -r requirements.txt")
+    print("\n-----------------------\nDependencies Installed\n-----------------------\n")
+    os.system("python CarRatingBot.py")
+    exit()
+    
 
 def createEnv():
-    with open('config.json', 'r') as config_file:
-        config = json.load(config_file)
-        token = config['token']
+    try:
+        with open('config.json', 'r') as config_file:
+            config = json.load(config_file)
+            token = config['token']
 
-    with open('.env', 'w') as env_file:
-        env_file.write(f'DISCORD_TOKEN={token}')
+        with open('.env', 'w') as env_file:
+            env_file.write(f'DISCORD_TOKEN={token}')
 
+    except FileNotFoundError:
+        print("config.json not found. Please create a config.json file following the README")
 
 
 intents = discord.Intents.all()
@@ -75,6 +84,8 @@ if __name__ == "__main__":
     if os.path.exists(".env"):
         load_dotenv()
     else:
+        import createDB
+        createDB.run()
         createEnv()
         load_dotenv()
     TOKEN = os.getenv("DISCORD_TOKEN")

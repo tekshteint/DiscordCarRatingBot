@@ -8,7 +8,7 @@ except ImportError:
     from pymongo import MongoClient
 
 
-def CreateDB():
+def run():
     # Connection details for MongoDB
     mongo_host = 'localhost'  
     mongo_port = 27017  
@@ -69,4 +69,4 @@ def CreateDB():
     client.close()
     
 if __name__ == "__main__":
-    CreateDB()
+    run()
