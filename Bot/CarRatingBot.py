@@ -7,9 +7,9 @@ try:
     import Crawler
     import json
 except ImportError:
-    os.system("python -m pip install -r requirements.txt")
+    os.system("pip install -r requirements.txt")
     print("\n-----------------------\nDependencies Installed\n-----------------------\n")
-    os.system("python CarRatingBot.py")
+    os.system("py CarRatingBot.py")
     exit()
     
 
