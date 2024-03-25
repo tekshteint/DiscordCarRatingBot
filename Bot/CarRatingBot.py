@@ -14,16 +14,15 @@ except ImportError:
     
 
 def createEnv():
-    try:
-        with open('config.json', 'r') as config_file:
-            config = json.load(config_file)
-            token = config['token']
+    here = os.path.dirname(os.path.abspath(__file__))
+    filename = os.path.join(here, 'config.json')
+    with open(filename, 'r') as config_file:
+        config = json.load(config_file)
+        token = config['token']
 
-        with open('.env', 'w') as env_file:
-            env_file.write(f'DISCORD_TOKEN={token}')
-
-    except FileNotFoundError:
-        print("config.json not found. Please create a config.json file following the README")
+    envPath = os.path.join(here, '.env')
+    with open(envPath, 'w') as env_file:
+        env_file.write(f'DISCORD_TOKEN={token}')
 
 
 intents = discord.Intents.all()
@@ -84,8 +83,6 @@ if __name__ == "__main__":
     if os.path.exists(".env"):
         load_dotenv()
     else:
-        import createDB
-        createDB.run()
         createEnv()
         load_dotenv()
     TOKEN = os.getenv("DISCORD_TOKEN")

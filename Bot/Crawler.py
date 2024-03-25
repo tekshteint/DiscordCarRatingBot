@@ -73,16 +73,20 @@ class listingCrawler():
         title = soup.find_all("span", {"id": "titletextonly"})
         price = soup.find_all("span", {"class": "price"})
         location = soup.find_all("meta", {"name": "geo.placename"})
-        attributes = soup.find_all("p", {"class": "attrgroup"})
+        attributes = soup.find_all("div", {"class": "attrgroup"})
         attributesHTML = str(attributes[1])
         attributeSoup = bs(attributesHTML, "html.parser")
         spanElements = attributeSoup.find_all("span")
                 
+        classNames, values= [], []
         for span in spanElements:
-            className = span.text.split(':')[0].strip()
-            value = span.find('b')
-            self.clAttrFinal[className] = value.text.strip() if value else ''       
-        
+            value, className = "",""
+            if span.attrs["class"] == ['labl']:
+                classNames.append(span.text.split(':')[0].strip())
+            else:
+                values.append(span.text.split(':')[0].strip())
+
+        self.clAttrFinal = dict(zip(classNames, values))  
         
         description = soup.find_all("section", {"id" : "postingbody"})
 
@@ -261,4 +265,4 @@ if __name__ == "__main__":
 
     #db.add_car_to_fb(fbTest.getFBtitle(), fbTest.getFBprice(), fbTest.getFBlocation(), fbTest.getFBdesc())
     #rate = db.rateListing("https://www.facebook.com/marketplace/item/179647175179591/?referralSurface=messenger_lightspeed_banner&referralCode=messenger_banner")
-    clTest = listingCrawler("https://sacramento.craigslist.org/cto/d/sacramento-super-low-mileage-2006-mazda/7666519489.html")
+    clTest = listingCrawler("https://losangeles.craigslist.org/lac/cto/d/los-angeles-1994-mazda-miata-na-manual/7727862632.html")

@@ -4,7 +4,7 @@ import CarBrandEnum
 import re
 
 # Connection details for MongoDB
-mongo_host = 'mongodb'  
+mongo_host = 'localhost'  
 mongo_port = 27017 
 mongo_db_name = 'CarRatingBotDB' 
 
@@ -84,9 +84,17 @@ def add_car_to_cl(title, price, location, car_attributes, description, link):
     
     if car_model_substring != -1:
         car_model = str(title[car_model_substring + len(car_make):]).split()
+        print("if")
     else:
-        car_model = title[title.find(car_make):]
-        car_model = title.replace(car_make, "").replace(str(car_year), "").lstrip()
+        modelTrimming = title.split()
+        print(modelTrimming)
+        for i in range(len(modelTrimming)):
+            if len(modelTrimming[i]) > 3 and modelTrimming[i].isdecimal():
+                modelTrimming.pop(i)
+                break
+        car_model = modelTrimming[1]
+                
+    print("Car model: ", car_model)
     
     try:
         car_data = {

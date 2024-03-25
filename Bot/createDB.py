@@ -10,7 +10,7 @@ except ImportError:
 
 def run():
     # Connection details for MongoDB
-    mongo_host = 'mongodb'  
+    mongo_host = 'localhost'  
     mongo_port = 27017  
     mongo_db_name = 'CarRatingBotDB'  
 

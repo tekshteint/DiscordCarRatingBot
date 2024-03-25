@@ -41,3 +41,6 @@ Make sure to get your own Bot Token from Discord's developer portal if you'd lik
     "token": "YOUR-TOKEN-HERE"
  }
  ```
+If you choose to run the bot locally, you will need to change the following:
+ * line 7 in MongoDB_Client.py should be `localhost` not `mongodb`
+ * line 13 in createDB.py should be `localhost` not `mongodb`
