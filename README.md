@@ -19,6 +19,13 @@
  * I tested this on a Pi 4 running Ubuntu server 64 bit, and there's a few extra steps needed to be taken. 
  * Big thanks and credit where credit's due, this was made possible thanks to this [repo](https://github.com/themattman/mongodb-raspberrypi-docker)
  * **Steps**
+   
+   * [Install Docker](https://dev.to/elalemanyo/how-to-install-docker-and-docker-compose-on-raspberry-pi-1mo)
+  
+   * `cd /path/to/repo`
+  
+   * Install the required modules `pip install -r Bot/requirements.txt`
+
    * `wget https://github.com/themattman/mongodb-raspberrypi-docker/releases/download/r7.0.4-mongodb-raspberrypi-docker-unofficial/mongodb.ce.pi4.r7.0.4-mongodb-raspberrypi-docker-unofficial.tar.gz`
    
    * `sudo docker load --input mongodb.ce.pi4.r7.0.4-mongodb-raspberrypi-docker-unofficial.tar.gz`
@@ -26,6 +33,10 @@
    * Make sure to utilize the `docker-compose.rPi.yml` file for Pis specifically
 
    * `sudo docker-compose -f docker-compose.rPi.yml up -d`
+  
+   * `* sudo docker compose up -d`
+
+
 
  **What to expect**
   - I'm looking to add searching through queries, rating listings in comparison to what's been stored, and comparing to KBB's pricing
