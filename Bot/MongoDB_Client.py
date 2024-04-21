@@ -4,7 +4,7 @@ import CarBrandEnum
 import re
 
 # Connection details for MongoDB
-mongo_host = 'mongodb'  
+mongo_host = 'localhost'  #change to 'mongodb' if running on a dockerized environment
 mongo_port = 27017 
 mongo_db_name = 'CarRatingBotDB' 
 
@@ -208,6 +208,43 @@ def rateModel(model):
     average_price = total_price / count if count > 0 else 0
     return average_price.__round__(2)
         
+        
+def tweak(link: str):
+    pass
+
+def returnDocument(link: str):
+    document = fb_collection.find_one({'_id': link})
+    if document:
+        return printDocument(document)
+    else:
+        document = cl_collection.find_one({'_id': link})
+        if document:
+            return printDocument(document)
+        else:
+            return None
+        
+def getDocument(link: str):
+    document = fb_collection.find_one({'_id': link})
+    attributes = {}
+    if document:
+        for key, value in document.items():
+            if key != "_id":
+                attributes[key] = value
+    else:
+        document = cl_collection.find_one({'_id': link})
+        if document:
+            for key, value in document.items():
+                if key != "_id":
+                    attributes[key] = value
+    return attributes if attributes else None
+
+def printDocument(document):
+    attributes = []
+    for key, value in document.items():
+        if key != "_id":
+            attributes.append(f"{key}: {value}")
+    return "\n".join(attributes)
+
 class VehicleAdded(Exception):
     pass
 

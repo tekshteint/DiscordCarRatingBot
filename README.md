@@ -36,6 +36,8 @@
   
    * `* sudo docker compose up -d`
 
+   * In MongoDB_Client.py, make sure to follow the directions there to connect to the database instance if you do run in a dockerized environment
+
 
 
  **What to expect**

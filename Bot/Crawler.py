@@ -5,6 +5,8 @@ import xml.dom.minidom as minidom
 import MongoDB_Client as db
 import os
 import aiohttp
+import re
+import datetime
 
 class listingCrawler():
     def __init__(self, url):
@@ -224,17 +226,64 @@ async def rateListing(url):
 
 async def rateModel(model):
     rating = db.rateModel(model)
+    return f"{model} has an average price of ${rating}. Remember sometimes models don't have the right name because of how they're listed!"
+    
+    
+""" async def tweak(model):
+    rating = db.tweak(model)
+    return rating """
+
+async def returnDocument(model):
+    rating = db.returnDocument(model)
     return rating
+
+async def kbb(url):
+    document = db.getDocument(url)
+    
+    """ Test Case """
+    debug = False
+    if debug:
+        document = {
+            "Make": "Mazda",
+            "Model": "MX-5 Miata",
+            "Year": 2006
+        }
+    
+    kbbLinkBuilder = f"https://www.kbb.com/{document['Make'].lower()}/{document['Model'].replace(' ','-').lower()}/{document['Year']}/?condition=good&extcolor=black&intent=trade-in-sell&mileage={(datetime.datetime.now().year - document['Year']) * 15000}&modalview=false&offeroptions=true&options=6461370%7ctrue&pricetype=private-party&subintent=sell"    
+    print(kbbLinkBuilder)
+    soup = bs(requests.get(kbbLinkBuilder).content, "html.parser")
+    objects = soup.find("object")
+    
+    script_tag = soup.find('script', text=lambda text: text and 'window.__APOLLO_STATE__' in text)
+
+    # Extract the content inside the script tag
+    script_content = script_tag.string
+    vehicleIdMatch = r'"vehicleId":"(.*?)"'
+    matches = re.findall(vehicleIdMatch, str(script_content))
+    
+    vehicleId = matches[0]
+ 
+    """ soup = bs(requests.get(kbbLinkBuilder).content, "html.parser")
+    objects = soup.find("object")
+    newCall = objects.get('data')
+    cleanedCall = re.sub(r'&amp;', '', newCall)
+    print(cleanedCall)
+    
+    #return cleanedCall
+    kbbResponse = requests.get(cleanedCall)
+    return kbbResponse.content"""
+    upaStringBuilder = f"https://upa.syndication.kbb.com/usedcar/privateparty/sell/?apikey=76a9532b-fa54-4d02-8e6a-91c3fb85376c&zipcode=90801&vehicleid={vehicleId}&condition=good&mileage=206000&format=svg"
+    kbbSVG = requests.get(upaStringBuilder)
+    with open("Bot/kbbSVG.svg", "wb") as file:
+        file.write(kbbSVG.content)
+        
+    return 200
     
 
-    """
-    TODO:
-    
-    """
     
 if __name__ == "__main__":
 
-    #fbTest = listingCrawler("https://www.facebook.com/marketplace/item/3335656183326007/?ref=browse_tab&referral_code=marketplace_top_picks&referral_story_type=top_picks")
+    #fbTest = listingCrawler("https://www.facebook.com/marketplace/item/849146070311769/?ref=browse_tab&referral_code=marketplace_top_picks&referral_story_type=top_picks")
     #fbTest = listingCrawler("https://www.facebook.com/marketplace/item/1527363641422998/?ref=browse_tab&referral_code=marketplace_top_picks&referral_story_type=top_picks")
     #fbTest = listingCrawler("https://www.facebook.com/marketplace/item/1375343499699020/?ref=browse_tab&referral_code=marketplace_top_picks&referral_story_type=top_picks")
     #fbTest = listingCrawler("https://www.facebook.com/marketplace/item/688893393165373/?ref=browse_tab&referral_code=marketplace_top_picks&referral_story_type=top_picks")
@@ -265,4 +314,10 @@ if __name__ == "__main__":
 
     #db.add_car_to_fb(fbTest.getFBtitle(), fbTest.getFBprice(), fbTest.getFBlocation(), fbTest.getFBdesc())
     #rate = db.rateListing("https://www.facebook.com/marketplace/item/179647175179591/?referralSurface=messenger_lightspeed_banner&referralCode=messenger_banner")
-    clTest = listingCrawler("https://losangeles.craigslist.org/lac/cto/d/los-angeles-1994-mazda-miata-na-manual/7727862632.html")
+    #clTest = listingCrawler("https://losangeles.craigslist.org/lac/cto/d/los-angeles-1994-mazda-miata-na-manual/7727862632.html")
+    
+    #url = "https://www.kbb.com/mazda/mx-5-miata/2006/club-spec-convertible-2d/?condition=good&extcolor=blue&intent=trade-in-sell&mileage=206000&modalview=false&offeroptions=true&options=6461370%7ctrue&pricetype=private-party&subintent=sell"
+    url = "https://www.facebook.com/marketplace/item/774603191045694/?ref=browse_tab&referral_code=marketplace_top_picks&referral_story_type=top_picks"
+    kbb(url)
+    
+    
