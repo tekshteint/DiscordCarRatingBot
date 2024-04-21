@@ -277,7 +277,7 @@ async def kbb(url):
     return kbbResponse.content"""
     upaStringBuilder = f"https://upa.syndication.kbb.com/usedcar/privateparty/sell/?apikey=76a9532b-fa54-4d02-8e6a-91c3fb85376c&zipcode=90801&vehicleid={vehicleId}&condition=good&mileage=206000&format=svg"
     kbbSVG = requests.get(upaStringBuilder)
-    with open("Bot/kbbSVG.svg", "wb") as file:
+    with open("kbbSVG.svg", "wb") as file:
         file.write(kbbSVG.content)
         
     return 200

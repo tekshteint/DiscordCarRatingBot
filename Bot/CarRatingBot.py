@@ -127,7 +127,7 @@ async def kbb(ctx, *, command):
         await Crawler.kbb(command)
         import svg2gif
         svg2gif
-        await ctx.send(file=discord.File("Bot/kbbSVG.gif"))
+        await ctx.send(file=discord.File("kbbSVG.gif"))
     except Exception as e:
         await ctx.send(f"Error occurred: {str(e)}")
 

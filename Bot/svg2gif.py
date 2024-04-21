@@ -31,7 +31,7 @@ if len(sys.argv) == 2:
 	ABSOLUTE_FILE_PATH = os.getcwd()
 elif len(sys.argv) == 1:
 	ABSOLUTE_FILE_PATH = os.getcwd()
-	FILE_NAME = "Bot/kbbSVG.svg"
+	FILE_NAME = "kbbSVG.svg"
 else:
 	raise Exception("Usage: python svg2gif.py <SVG_file>")
 SCREENSHOTS_PER_SECOND = 11 # This arbitrary number worked but is not perfect
