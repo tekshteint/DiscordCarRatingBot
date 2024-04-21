@@ -4,7 +4,7 @@ import CarBrandEnum
 import re
 
 # Connection details for MongoDB
-mongo_host = 'localhost'  #change to 'mongodb' if running on a dockerized environment
+mongo_host = 'mongodb'  #change to 'mongodb' if running on a dockerized environment or 'localhost' to run locally
 mongo_port = 27017 
 mongo_db_name = 'CarRatingBotDB' 
 

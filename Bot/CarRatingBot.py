@@ -125,7 +125,9 @@ async def kbb(ctx, *, command):
         area = ctx.message.channel
         #rating = await Crawler.kbb(command)
         await Crawler.kbb(command)
-        await ctx.send("For now, until I figure out a way to convert this just download and open the SVG file to see the KBB market value", file=discord.File("Bot/kbbSVG.svg"))
+        import svg2gif
+        svg2gif
+        await ctx.send(file=discord.File("Bot/kbbSVG.gif"))
     except Exception as e:
         await ctx.send(f"Error occurred: {str(e)}")
 
