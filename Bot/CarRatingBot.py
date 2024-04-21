@@ -77,8 +77,37 @@ async def rateModel(ctx, *, command):
 @bot.command(name='tweak')
 async def tweak(ctx, *, command):
     try:
-        rating = await Crawler.tweak(command)
-        await ctx.send(rating)
+        document = await Crawler.getDocument(command)
+        if document:
+            for key, value in document.items():
+                await ctx.send(f"Current value for {key}:\n{value}\nDo you want to make changes to {key}? y/n or 'stop' at any time to cancel")
+
+                def check(m):
+                    return m.author == ctx.author and m.channel == ctx.channel and m.content.lower() in ['y', 'n', 'yes', 'no', 'stop']
+
+                try:
+                    user_response = await bot.wait_for('message', check=check, timeout=60)  
+
+                    if user_response.content.lower() == 'y':
+                        await ctx.send(f"What changes do you want to make to {key}?")
+                        # Wait for user input for changes
+                        user_changes = await bot.wait_for('message', check=lambda m: m.author == ctx.author and m.channel == ctx.channel, timeout=120)
+
+                        # Update the value in the document
+                        document[key] = user_changes.content
+
+                        await ctx.send("Value updated successfully.")
+                    elif user_response.content.lower() == 'stop':
+                        await ctx.send("Changes stopped.")
+                        break
+                    else:
+                        await ctx.send(f"No changes requested for {key}.")
+                except Exception as e:
+                    await ctx.send(f"Error occurred: {str(e)}")
+            await Crawler.tweak(command, document)
+            await ctx.send("Tweak Operations complete.")
+        else:
+            await ctx.send("Car not found. Make sure to add it to the database first.")
     except Exception as e:
         await ctx.send(f"Error occurred: {str(e)}")
         

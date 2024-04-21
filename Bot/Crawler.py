@@ -229,9 +229,12 @@ async def rateModel(model):
     return f"{model} has an average price of ${rating}. Remember sometimes models don't have the right name because of how they're listed!"
     
     
-""" async def tweak(model):
-    rating = db.tweak(model)
-    return rating """
+async def getDocument(id):
+    return db.getDocument(id)
+
+async def tweak(id, updates):
+    db.tweak(id, updates)
+    return "Tweak Successful"
 
 async def returnDocument(model):
     rating = db.returnDocument(model)

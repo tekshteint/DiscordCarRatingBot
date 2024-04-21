@@ -105,7 +105,7 @@ def add_car_to_cl(title, price, location, car_attributes, description, link):
         "Year": car_year,
         "Vin": car_attributes.get("vin") or "Not Provided",
         "Odometer": int(car_attributes.get("odometer")) or -1,
-        "Condition": car_attributes.get("conditioNot Providedn") or "",
+        "Condition": car_attributes.get("condition") or "Not Provided",
         "Drive": car_attributes.get("drive") or "",
         "Fuel": car_attributes.get("fuel") or "Not Provided",
         "Paint Color": car_attributes.get("paint color") or "Not Provided",
@@ -209,9 +209,52 @@ def rateModel(model):
     return average_price.__round__(2)
         
         
-def tweak(link: str):
-    pass
-
+def tweak(link: str, updates: dict):
+    document = fb_collection.find_one({'_id': link})
+    if document:
+        result = fb_collection.delete_one({'_id': link})
+        if result.deleted_count > 0:
+            car_data = {
+                "_id" : link,
+                "Title": updates['Title'],
+                "Price": float(updates['Price']), 
+                "Location": updates['Location'],
+                "Make": updates['Make'],
+                "Model": updates['Model'],
+                "Year": updates['Year'],
+                "Description": updates['Description']
+            }
+    
+        fb_collection.insert_one(car_data)
+        print("Car added to FB collection successfully!")            
+    else:
+        print(updates)
+        document = cl_collection.find_one({'_id': link})
+        if document:
+            result = cl_collection.delete_one({'_id': link})
+            if result.deleted_count > 0:
+               car_data = {
+                "_id" : link,
+                "Title": updates["Title"],
+                "Price": float(updates["Price"]),
+                "Location": updates["Location"],
+                "Make": updates["Make"],
+                "Model": updates["Model"],
+                "Year": int(updates["Year"]),
+                "Vin": updates["Vin"] or "Not Provided",
+                "Odometer": int(updates["Odometer"]) or -1,
+                "Condition": updates["Condition"] or "",
+                "Drive": updates["Drive"] or "",
+                "Fuel": updates["Fuel"] or "Not Provided",
+                "Paint Color": updates["Paint Color"] or "Not Provided",
+                "Size": updates["Size"] or "Not Provided",
+                "Title status": updates["Title status"] or "Not Provided",
+                "Transmission": updates["Transmission"] or "Not Provided",
+                "Type": updates["Type"] or "Not Provided",
+                "Description": updates["Description"]
+            }
+            cl_collection.insert_one(car_data)
+            print("Car added to CL collection successfully!")
 def returnDocument(link: str):
     document = fb_collection.find_one({'_id': link})
     if document:
@@ -247,7 +290,3 @@ def printDocument(document):
 
 class VehicleAdded(Exception):
     pass
-
-
-# Close the MongoDB connection
-#client.close()
