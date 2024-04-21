@@ -5,14 +5,16 @@ FROM mongo:latest
 WORKDIR /app
 
 # Copy the Python script into the container
-COPY Bot/ /app/
+COPY . /app/
 
 # Install any necessary dependencies for the Python script
 RUN apt-get update && \
+   # apt-get upgrade -y && \
     apt install -y python3 && \
-    apt install -y pip
-
-RUN pip install -r /app/requirements.txt
+    apt install -y pip && \
+    apt install -y python3-pip && \
+    pip install --upgrade pip && \
+    pip install -r /app/Bot/requirements.txt
 
 # Set the command to run the Python script when the container starts
 CMD ["python3", "CarRatingBot.py"]
