@@ -1,4 +1,7 @@
 # Discord Car Rating Bot
+[Add this bot to your server here!](https://discord.com/oauth2/authorize?client_id=1122669916508655738)
+
+
  A discord bot meant to be used to rate and compare car listings on Facebook Marketplace as well as Craigslist. 
  This bot is able to scrape FB and CL and then upload listings to a MongoDB. From there you have the following options for commands:
    * `$add`: The add command is used to add a car listing(s) to the database. This command takes a URL of a 1 to many cars not in the database.
