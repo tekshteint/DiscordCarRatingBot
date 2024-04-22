@@ -21,6 +21,9 @@ from PIL import Image
 from bs4 import BeautifulSoup
 from math import ceil
 from selenium import webdriver
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
+options = FirefoxOptions()
+
 
 
 ########################################################
@@ -105,7 +108,8 @@ if not os.path.exists("_screenshots"):
 	os.makedirs("_screenshots")
 
 
-driver = webdriver.Firefox()
+driver = webdriver.Remote('http://localhost:4444/', options=options)
+
 
 # In Selenium you need the prefix file:/// to open a local file
 if USE_TMP_PATH:

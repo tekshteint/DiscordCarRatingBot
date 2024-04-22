@@ -1,4 +1,5 @@
 import os
+import logging
 try:
     from time import sleep
     import discord
@@ -48,6 +49,7 @@ async def add_to_db(ctx, *, command):
             await ctx.send("Added to DB")
     except Exception as e:
         await ctx.send(f"Error occurred: {str(e)}")
+        logging.exception("bot command add")
         
 @bot.command(name='rate')
 async def rateListing(ctx, *, command):
@@ -64,7 +66,7 @@ async def rateListing(ctx, *, command):
             rating = await Crawler.rateListing(command)
             await ctx.send(rating)
         except Exception as e:
-            pass
+            logging.exception("bot command rate nested exception")
         
 @bot.command(name='avg')
 async def rateModel(ctx, *, command):
@@ -73,6 +75,7 @@ async def rateModel(ctx, *, command):
         await ctx.send(rating)
     except Exception as e:
         await ctx.send(f"Error occurred: {str(e)}")
+        logging.exception("bot command avg")
         
 @bot.command(name='tweak')
 async def tweak(ctx, *, command):
@@ -110,6 +113,7 @@ async def tweak(ctx, *, command):
             await ctx.send("Car not found. Make sure to add it to the database first.")
     except Exception as e:
         await ctx.send(f"Error occurred: {str(e)}")
+        logging.exception("bot command tweak")
         
 @bot.command(name='return')
 async def returnDocument(ctx, *, command):
@@ -118,11 +122,11 @@ async def returnDocument(ctx, *, command):
         await ctx.send(rating)
     except Exception as e:
         await ctx.send(f"Error occurred: {str(e)}")
+        logging.exception("bot command return")
         
 @bot.command(name='kbb')
 async def kbb(ctx, *, command):
     try:
-        area = ctx.message.channel
         #rating = await Crawler.kbb(command)
         await Crawler.kbb(command)
         import svg2gif
@@ -130,6 +134,7 @@ async def kbb(ctx, *, command):
         await ctx.send(file=discord.File("kbbSVG.gif"))
     except Exception as e:
         await ctx.send(f"Error occurred: {str(e)}")
+        logging.exception("bot command kbb")
 
 
 
