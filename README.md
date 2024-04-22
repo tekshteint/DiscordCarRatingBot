@@ -1,6 +1,17 @@
 # Discord Car Rating Bot
  A discord bot meant to be used to rate and compare car listings on Facebook Marketplace as well as Craigslist. 
- Currently in extreme beta, this bot is able to scrape FB and CL and then upload listings to a MongoDB. 
+ This bot is able to scrape FB and CL and then upload listings to a MongoDB. From there you have the following options for commands:
+   * `$add`: The add command is used to add a car listing(s) to the database. This command takes a URL of a 1 to many cars not in the database.
+
+   * `$rate`: The rate command is used to rate a car listing. It will rate it based on the average price of that model in the database. This command takes a URL of a car already in the database
+
+   * `$avg`: The avg command is used to get the average rating of a car model. An example call would be `$avg brz` which will return the average price of BRZs in the database. 
+
+   * `$tweak`: The tweak command is used to modify the details of a car listing in the database. Since there is no golden standard to listing cars, the model of a car could be stored as "MX-5 SUPER CLEAN LOW MILES 8000 OBO" instead of just MX-5. This command takes a URL of a car already in the database
+
+   * `$return`: The return command is used to retrieve all information about a car from the database. This command takes a URL of a car already in the database
+
+   * `$kbb`: The kbb command is used to interact with the Kelley Blue Book (KBB) service. It returns a GIF image of the result (currently broken and needs to be fixed, but works when not dockerized). This command takes a URL of a car already in the database
 
 
 ### Docker!
@@ -23,8 +34,6 @@
    * [Install Docker](https://dev.to/elalemanyo/how-to-install-docker-and-docker-compose-on-raspberry-pi-1mo)
   
    * `cd /path/to/repo`
-  
-   * Install the required modules `pip install -r Bot/requirements.txt`
 
    * `wget https://github.com/themattman/mongodb-raspberrypi-docker/releases/download/r7.0.4-mongodb-raspberrypi-docker-unofficial/mongodb.ce.pi4.r7.0.4-mongodb-raspberrypi-docker-unofficial.tar.gz`
    
@@ -34,11 +43,11 @@
 
    * `sudo docker-compose -f docker-compose.rPi.yml up -d`
   
-   * `* sudo docker compose up -d`
+   * `sudo docker compose up -d`
 
    * In MongoDB_Client.py, make sure to follow the directions there to connect to the database instance if you do run in a dockerized environment
 
-
+   * I personally have it setup as a systemd service on my raspberry pi which allows for nightly reboots and the bot will always come back alive when the machine comes on.
 
  **What to expect**
   - I'm looking to add searching through queries, rating listings in comparison to what's been stored, and comparing to KBB's pricing
@@ -54,6 +63,4 @@ Make sure to get your own Bot Token from Discord's developer portal if you'd lik
     "token": "YOUR-TOKEN-HERE"
  }
  ```
-If you choose to run the bot locally, you will need to change the following:
- * line 7 in MongoDB_Client.py should be `localhost` not `mongodb`
- * line 13 in createDB.py should be `localhost` not `mongodb`
+
